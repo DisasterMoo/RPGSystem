@@ -10,9 +10,9 @@ public class ClassSkill extends Skill{
 	public Type classType;
 	public int level;
 	
-	public ClassSkill(String skillName, int requiredLevels, Type classType, int level)
+	public ClassSkill(String skillName, int requiredLevels, String icon, Type classType, int level)
 	{
-		super(skillName, requiredLevels);
+		super(skillName, requiredLevels, icon);
 		this.classType = classType;
 		this.level = level;
 	}

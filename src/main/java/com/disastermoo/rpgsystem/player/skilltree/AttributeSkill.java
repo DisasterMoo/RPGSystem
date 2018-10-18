@@ -7,9 +7,9 @@ public class AttributeSkill extends Skill{
 	private Attribute.Type attributeType;
 	private int value;
 	
-	public AttributeSkill(String skillName, int requiredLevels, Attribute.Type attributeType, int value)
+	public AttributeSkill(String skillName, int requiredLevels, String icon, Attribute.Type attributeType, int value)
 	{
-		super(skillName, requiredLevels);
+		super(skillName, requiredLevels, icon);
 		this.attributeType = attributeType;
 		this.value = value;
 	}
