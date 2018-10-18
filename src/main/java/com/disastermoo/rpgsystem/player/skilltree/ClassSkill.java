@@ -7,12 +7,12 @@ public class ClassSkill extends Skill{
 		Swordfighter, Defender, Magus, Cleric, Marksman; 
 	}
 	
-	public Type classType;
-	public int level;
+	private Type classType;
+	private int level;
 	
-	public ClassSkill(String skillName, int requiredLevels, String icon, Type classType, int level)
+	public ClassSkill(String icon, Type classType, int level)
 	{
-		super(skillName, requiredLevels, icon);
+		super(classType.name(), (level - 1) * 2 + 1, icon);
 		this.classType = classType;
 		this.level = level;
 	}
@@ -56,5 +56,17 @@ public class ClassSkill extends Skill{
 	public Type getClassType()
 	{
 		return this.classType;
+	}
+	
+	@Override
+	public void learnSkill()
+	{
+		this.level = 1;
+	}
+	
+	@Override
+	public void unlearnSkill()
+	{
+		this.level = 0;
 	}
 }

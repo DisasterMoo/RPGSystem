@@ -1,13 +1,12 @@
 package com.disastermoo.rpgsystem.player.skilltree;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Skill {
 	private String skillName;
 	private int requiredLevels;
-	private boolean learn;
+	protected int learn;
 	private String icon;
 	private List<Skill> requirements;
 	private Point2D position;
@@ -17,9 +16,14 @@ public abstract class Skill {
 		this.skillName = skillName;
 		this.requiredLevels = requiredLevels;
 		this.icon = icon;
-		learn = false;
+		learn = 0;
 		requirements = null;
 		position.setLocation(0, 0);
+	}
+	
+	public void setSkillName(String newName)
+	{
+		this.skillName = newName;
 	}
 	
 	public String getSkillName()
@@ -27,24 +31,31 @@ public abstract class Skill {
 		return this.skillName;
 	}
 	
+	public void setRequiredLevels(int newRequiredLevel)
+	{
+		this.requiredLevels = newRequiredLevel;
+	}
+	
 	public int getRequiredLevels()
 	{
 		return this.requiredLevels;
 	}
 	
-	public boolean isLearned()
+	public int isLearned()
 	{
 		return this.learn;
 	}
 	
 	public void learnSkill()
 	{
-		this.learn = true;
+		this.learn++;
+		if(this.learn > 5)this.learn = 5;
 	}
 	
 	public void unlearnSkill()
 	{
-		this.learn = false;
+		this.learn--;
+		if(this.learn < 0)this.learn = 0;
 	}
 	
 	public void setPosition(double posX, double posY)
@@ -57,9 +68,10 @@ public abstract class Skill {
 		return this.position;
 	}
 	
-	public void setRequirements(List<Skill> requirements)
+	public Skill setRequirements(List<Skill> requirements)
 	{
 		this.requirements = requirements;
+		return this;
 	}
 	
 	public List<Skill> getRequirements()

@@ -2,7 +2,7 @@ package com.disastermoo.rpgsystem.player;
 
 public class Attribute {
 	public enum Type {
-		STR, AGI, INT, CON;
+		STR, AGI, INT, CON, ALL;
 	}
 	private int STR, AGI, INT, CON;
 	

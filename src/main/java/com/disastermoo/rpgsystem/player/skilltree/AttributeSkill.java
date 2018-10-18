@@ -5,21 +5,41 @@ import com.disastermoo.rpgsystem.player.Attribute;
 public class AttributeSkill extends Skill{
 	
 	private Attribute.Type attributeType;
-	private int value;
 	
-	public AttributeSkill(String skillName, int requiredLevels, String icon, Attribute.Type attributeType, int value)
+	public AttributeSkill(String icon, Attribute.Type attributeType)
 	{
-		super(skillName, requiredLevels, icon);
+		super(attributeType.name() + "+", 1, icon);
 		this.attributeType = attributeType;
-		this.value = value;
 	}
 	
-	public Attribute.Type getAttributeType() {
+	public Attribute.Type getAttributeType() 
+	{
 		return this.attributeType;
 	}
 	
-	public int getValue()
+	private void setName()
 	{
-		return this.value;
+		String plus = "+";
+		int i;
+		for(i=0; i < this.learn && i < 4; i++) {
+			plus += "+";
+		}
+		super.setSkillName(this.attributeType.name() + plus);
+	}
+	
+	@Override
+	public void learnSkill()
+	{
+		super.learnSkill();
+		setName();
+		super.setRequiredLevels(this.learn + 1);
+	}
+	
+	@Override
+	public void unlearnSkill()
+	{
+		super.learnSkill();
+		setName();
+		super.setRequiredLevels(this.learn + 1);
 	}
 }
