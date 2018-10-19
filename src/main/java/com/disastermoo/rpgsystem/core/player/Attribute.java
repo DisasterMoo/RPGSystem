@@ -1,4 +1,4 @@
-package com.disastermoo.rpgsystem.player;
+package com.disastermoo.rpgsystem.core.player;
 
 public class Attribute {
 	public enum Type {

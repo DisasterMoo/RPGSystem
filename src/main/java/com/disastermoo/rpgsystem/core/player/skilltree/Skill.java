@@ -1,4 +1,4 @@
-package com.disastermoo.rpgsystem.player.skilltree;
+package com.disastermoo.rpgsystem.core.player.skilltree;
 
 import java.awt.geom.Point2D;
 import java.util.List;
@@ -7,19 +7,17 @@ public abstract class Skill {
 	private String skillName;
 	private int requiredLevels;
 	protected int learn;
-	private String icon;
 	private List<Skill> requirements;
-	private Point2D position;
 	
-	protected Skill(String skillName, int requiredLevels, String icon)
+	protected Skill(String skillName, int requiredLevels)
 	{
 		this.skillName = skillName;
 		this.requiredLevels = requiredLevels;
-		this.icon = icon;
 		learn = 0;
 		requirements = null;
-		position.setLocation(0, 0);
 	}
+	
+	public abstract Point2D getIconLocation();
 	
 	public void setSkillName(String newName)
 	{
@@ -56,16 +54,6 @@ public abstract class Skill {
 	{
 		this.learn--;
 		if(this.learn < 0)this.learn = 0;
-	}
-	
-	public void setPosition(double posX, double posY)
-	{
-		this.position.setLocation(posX, posY);
-	}
-	
-	public Point2D getPosition()
-	{
-		return this.position;
 	}
 	
 	public Skill setRequirements(List<Skill> requirements)

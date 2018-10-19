@@ -1,14 +1,16 @@
-package com.disastermoo.rpgsystem.player.skilltree;
+package com.disastermoo.rpgsystem.core.player.skilltree;
 
-import com.disastermoo.rpgsystem.player.Attribute;
+import java.awt.geom.Point2D;
+
+import com.disastermoo.rpgsystem.core.player.Attribute;
 
 public class AttributeSkill extends Skill{
 	
 	private Attribute.Type attributeType;
 	
-	public AttributeSkill(String icon, Attribute.Type attributeType)
+	public AttributeSkill(Attribute.Type attributeType)
 	{
-		super(attributeType.name() + "+", 1, icon);
+		super(attributeType.name() + "+", 1);
 		this.attributeType = attributeType;
 	}
 	
@@ -41,5 +43,25 @@ public class AttributeSkill extends Skill{
 		super.learnSkill();
 		setName();
 		super.setRequiredLevels(this.learn + 1);
+	}
+
+	@Override
+	public Point2D getIconLocation() {
+		switch(this.attributeType)
+		{
+		case AGI:
+			return new Point2D.Double(0, 0);
+		case ALL:
+			return new Point2D.Double(0, 0);
+		case CON:
+			return new Point2D.Double(0, 0);
+		case INT:
+			return new Point2D.Double(0, 0);
+		case STR:
+			return new Point2D.Double(0, 0);
+		default:
+			break;
+		}
+		return null;
 	}
 }
