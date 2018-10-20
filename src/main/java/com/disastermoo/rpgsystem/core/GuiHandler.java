@@ -1,6 +1,6 @@
 package com.disastermoo.rpgsystem.core;
 
-import com.disastermoo.rpgsystem.client.gui.GuiSkillTree;
+import com.disastermoo.rpgsystem.client.gui.GuiStatus;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -16,7 +16,7 @@ public class GuiHandler implements IGuiHandler{
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		if(ID == GUI_SKILL_TREE)return new GuiSkillTree();
+		if(ID == GUI_SKILL_TREE)return new GuiStatus();
 		return null;
 	}
 
