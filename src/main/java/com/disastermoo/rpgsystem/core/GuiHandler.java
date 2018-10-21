@@ -19,5 +19,4 @@ public class GuiHandler implements IGuiHandler{
 		if(ID == GUI_SKILL_TREE)return new GuiStatus();
 		return null;
 	}
-
 }
