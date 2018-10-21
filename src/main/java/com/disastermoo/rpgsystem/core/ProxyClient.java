@@ -1,9 +1,7 @@
-package com.disastermoo.rpgsystem.core.proxy;
+package com.disastermoo.rpgsystem.core;
 
 
 import org.lwjgl.input.Keyboard;
-
-import com.disastermoo.rpgsystem.core.EventHandler;
 
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.common.MinecraftForge;

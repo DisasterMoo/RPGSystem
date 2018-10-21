@@ -4,6 +4,14 @@ public class Attribute {
 	public enum Type {
 		STR, AGI, CON, INT, WIS, LCK;
 	}
+	/* Attributes
+	 * STR - Damage, CritDmg bonus
+	 * AGI - Attack speed, Move speed
+	 * CON - Health bonus, Life Regen
+	 * INT - Magical Damage
+	 * WIS - Magical Crit Dmg, Mana regen
+	 * LCK - Critical chance, drop chance bonus
+	 * */
 	private int STR, AGI, CON, INT, WIS, LCK;
 	
 	public Attribute()
@@ -75,5 +83,4 @@ public class Attribute {
 	{
 		if(value >= 10)this.LCK = value;
 	}
-	
 }

@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import com.disastermoo.rpgsystem.core.util.ModResource;
-import com.disastermoo.rpgsystem.core.util.RenderRotation;
+import com.disastermoo.rpgsystem.client.util.ModResource;
+import com.disastermoo.rpgsystem.client.util.RenderRotation;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;

@@ -1,4 +1,4 @@
-package com.disastermoo.rpgsystem.core.util;
+package com.disastermoo.rpgsystem.client.util;
 
 public enum RenderRotation {
     NORMAL,

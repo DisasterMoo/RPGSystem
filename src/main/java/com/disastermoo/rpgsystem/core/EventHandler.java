@@ -1,10 +1,10 @@
 package com.disastermoo.rpgsystem.core;
 
 import com.disastermoo.rpgsystem.RPGSystem;
-import com.disastermoo.rpgsystem.core.config.Config.Constants;
-import com.disastermoo.rpgsystem.core.proxy.ProxyClient;
-import com.disastermoo.rpgsystem.core.proxy.ProxyCommon;
-import com.disastermoo.rpgsystem.core.system.Materia;
+import com.disastermoo.rpgsystem.core.RPGConfig.Constants;
+import com.disastermoo.rpgsystem.core.item.ItemBase;
+import com.disastermoo.rpgsystem.core.item.Materia;
+import com.disastermoo.rpgsystem.core.system.EntityHandler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -12,14 +12,18 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.common.config.Config;
 
 @Mod.EventBusSubscriber(modid = Constants.MODID)
 public class EventHandler {
@@ -32,25 +36,37 @@ public class EventHandler {
     	return instance;
     }
 	
+	@SubscribeEvent
+    public void onConfigChangedEvent(OnConfigChangedEvent event)
+    {
+        if (event.getModID().equals(Constants.MODID))
+        {
+            ConfigManager.sync(Constants.MODID, Config.Type.INSTANCE);
+        }
+    }
+	
 	
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event) {
-		ProxyCommon.logger.info("Registering materia...");
-		for(int i = 1; i <= Constants.TOTAL_MATERIA; i++)
+		for(ItemBase it : RegistryHandler.INSTANCE.items.listAll)
 		{
-			Item im = new Materia(i);
-			event.getRegistry().register(im);
-			break;
+			event.getRegistry().register(it);
 		}
-		ProxyCommon.logger.info("All Materia registered.");
 	}
 	
+	/*
+	public static void onAttack(LivingAttackEvent event)
+	{
+		net.minecraftforge.event.entity.living.LivingDamageEvent ev;
+		ev.
+	}*/
 	
-	@SideOnly(Side.CLIENT)
+	
+	@SideOnly(Side.SERVER)
 	@SubscribeEvent(priority=EventPriority.LOW, receiveCanceled=false)
 	public static void spawnCreature(LivingSpawnEvent event)
 	{
-		//System.out.println(event.getEntity().getEntityId());
+		EntityHandler.onSpawn(event.getEntity());
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -65,15 +81,13 @@ public class EventHandler {
 	    }	
 	}
 	
-	
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public static void registerModels(ModelRegistryEvent event)
 	{
-	     for(int i = 1; i <= Constants.TOTAL_MATERIA; i++)
-	     {
-	    	 Item it = new Materia(i);
-	    	 ModelLoader.setCustomModelResourceLocation(it, i, new ModelResourceLocation(it.getRegistryName(), "inventory")); 
-	     }
-	 }
+		for(ItemBase it : RegistryHandler.INSTANCE.items.listAll)
+		{
+			it.initModel();
+		}
+	}
 }

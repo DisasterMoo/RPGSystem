@@ -9,13 +9,13 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-import com.disastermoo.rpgsystem.core.proxy.ProxyCommon;
-import com.disastermoo.rpgsystem.core.config.Config.Constants;
+import com.disastermoo.rpgsystem.core.ProxyCommon;
+import com.disastermoo.rpgsystem.core.RPGConfig.Constants;
 
 @Mod(modid = Constants.MODID, name = Constants.NAME, version = Constants.VERSION)
 public class RPGSystem
 {
-	@SidedProxy(clientSide = "com.disastermoo.rpgsystem.core.proxy.ProxyClient", serverSide = "com.disastermoo.rpgsystem.core.proxy.ProxyCommon")
+	@SidedProxy(clientSide = "com.disastermoo.rpgsystem.core.ProxyClient", serverSide = "com.disastermoo.rpgsystem.core.ProxyCommon")
 	public static ProxyCommon proxy;
 	
 	@Instance

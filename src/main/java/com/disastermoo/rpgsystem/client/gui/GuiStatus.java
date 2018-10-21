@@ -2,9 +2,9 @@ package com.disastermoo.rpgsystem.client.gui;
 
 import java.io.IOException;
 
-import com.disastermoo.rpgsystem.core.config.Config.Constants;
-import com.disastermoo.rpgsystem.core.util.ModResource;
-import com.disastermoo.rpgsystem.core.util.RenderRotation;
+import com.disastermoo.rpgsystem.client.util.ModResource;
+import com.disastermoo.rpgsystem.client.util.RenderRotation;
+import com.disastermoo.rpgsystem.core.RPGConfig.Constants;
 
 public class GuiStatus extends GuiBase {
 	
