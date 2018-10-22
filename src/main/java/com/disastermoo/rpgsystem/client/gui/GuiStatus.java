@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.disastermoo.rpgsystem.client.util.ModResource;
 import com.disastermoo.rpgsystem.client.util.RenderRotation;
-import com.disastermoo.rpgsystem.core.RPGConfig.Constants;
+import com.disastermoo.rpgsystem.core.config.RPGConfig.Constants;
 
 public class GuiStatus extends GuiBase {
 	

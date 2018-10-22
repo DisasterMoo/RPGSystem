@@ -1,21 +1,21 @@
 package com.disastermoo.rpgsystem.core;
 
 import com.disastermoo.rpgsystem.RPGSystem;
-import com.disastermoo.rpgsystem.core.RPGConfig.Constants;
+import com.disastermoo.rpgsystem.core.config.RPGConfig.Constants;
 import com.disastermoo.rpgsystem.core.item.ItemBase;
-import com.disastermoo.rpgsystem.core.item.Materia;
 import com.disastermoo.rpgsystem.core.system.EntityHandler;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -28,16 +28,8 @@ import net.minecraftforge.common.config.Config;
 @Mod.EventBusSubscriber(modid = Constants.MODID)
 public class EventHandler {
 	
-	private static EventHandler instance = null;
-	
-	public static EventHandler getInstance()
-    {
-		if(instance == null)instance = new EventHandler();
-    	return instance;
-    }
-	
 	@SubscribeEvent
-    public void onConfigChangedEvent(OnConfigChangedEvent event)
+    public static void onConfigChangedEvent(OnConfigChangedEvent event)
     {
         if (event.getModID().equals(Constants.MODID))
         {
@@ -54,19 +46,26 @@ public class EventHandler {
 		}
 	}
 	
-	/*
-	public static void onAttack(LivingAttackEvent event)
+	@SubscribeEvent
+	public static void onEntityDeath(LivingDeathEvent event){
+		if(!event.getEntity().world.isRemote && !(event.getEntity() instanceof EntityPlayer))EntityHandler.onDeath(event.getEntity());
+	}
+	
+	@SubscribeEvent
+	public static void onEntityDrop(LivingDropsEvent event)
 	{
-		net.minecraftforge.event.entity.living.LivingDamageEvent ev;
-		ev.
-	}*/
+		if(!event.getEntity().world.isRemote && !(event.getEntity() instanceof EntityPlayer))EntityHandler.onDrop(event);
+	}
 	
+	@SubscribeEvent
+	public static void onPlayerAttack(LivingHurtEvent event){
+		if(!event.getEntity().world.isRemote)EntityHandler.onPlayerAttack(event);
+	}
 	
-	@SideOnly(Side.SERVER)
 	@SubscribeEvent(priority=EventPriority.LOW, receiveCanceled=false)
-	public static void spawnCreature(LivingSpawnEvent event)
+	public static void spawnCreature(EntityJoinWorldEvent event)
 	{
-		EntityHandler.onSpawn(event.getEntity());
+		if(!event.getEntity().world.isRemote)EntityHandler.onSpawn(event.getEntity());
 	}
 	
 	@SideOnly(Side.CLIENT)

@@ -1,6 +1,6 @@
 package com.disastermoo.rpgsystem.core.item;
 
-import com.disastermoo.rpgsystem.core.RPGConfig.Constants;
+import com.disastermoo.rpgsystem.core.config.RPGConfig.Constants;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;

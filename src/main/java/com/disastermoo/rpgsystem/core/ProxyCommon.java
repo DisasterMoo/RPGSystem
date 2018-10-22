@@ -3,7 +3,8 @@ package com.disastermoo.rpgsystem.core;
 import org.apache.logging.log4j.Logger;
 
 import com.disastermoo.rpgsystem.RPGSystem;
-import com.disastermoo.rpgsystem.core.RPGConfig.Constants;
+import com.disastermoo.rpgsystem.core.config.RPGData;
+import com.disastermoo.rpgsystem.core.config.RPGConfig.Constants;
 
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -19,6 +20,8 @@ public class ProxyCommon {
     public void preInit(FMLPreInitializationEvent event)
     {
     	logger = event.getModLog();
+    	RPGData.INSTANCE.setFile(event.getModConfigurationDirectory().getAbsolutePath() + "/RPGSystem/monster.list");
+    	RPGData.INSTANCE.load();
     }
 
     public void init(FMLInitializationEvent event)

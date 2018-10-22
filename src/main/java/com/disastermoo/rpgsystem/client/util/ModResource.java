@@ -1,6 +1,6 @@
 package com.disastermoo.rpgsystem.client.util;
 
-import com.disastermoo.rpgsystem.core.RPGConfig.Constants;
+import com.disastermoo.rpgsystem.core.config.RPGConfig.Constants;
 
 import net.minecraft.util.ResourceLocation;
 
