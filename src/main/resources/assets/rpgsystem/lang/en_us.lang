@@ -60,3 +60,5 @@ rpgsystem.materia.59.name=Plus 2
 rpgsystem.materia.60.name=Plus 3
 
 rpgsystem.tooltip.materia.1=10%% Life boost
+
+rpgsystem.message.critical=CRITICAL

@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.disastermoo.rpgsystem.core.RPGConfig.Constants;
+import com.disastermoo.rpgsystem.core.config.RPGConfig.Constants;
 import com.disastermoo.rpgsystem.core.system.Attribute;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;

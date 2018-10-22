@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import com.disastermoo.rpgsystem.core.ProxyCommon;
-import com.disastermoo.rpgsystem.core.RPGConfig.Constants;
+import com.disastermoo.rpgsystem.core.config.RPGConfig.Constants;
 
 @Mod(modid = Constants.MODID, name = Constants.NAME, version = Constants.VERSION)
 public class RPGSystem
