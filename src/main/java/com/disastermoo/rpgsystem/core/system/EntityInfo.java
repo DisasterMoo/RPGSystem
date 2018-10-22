@@ -16,7 +16,7 @@ public class EntityInfo {
 	
 	public boolean isNew;
 	
-	private EntityInfo()
+	public EntityInfo()
 	{
 		materiaSlot = new ItemStack[7];
 		attributes = new Attribute();
