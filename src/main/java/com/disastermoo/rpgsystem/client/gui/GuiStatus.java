@@ -24,6 +24,7 @@ public class GuiStatus extends GuiBase {
 	{
 		drawMainBackground();
 		drawAttribute(player);
+		drawStatus(player);
         super.drawScreen(mouseX, mouseY, partialTicks);
 	}
 	
@@ -56,5 +57,23 @@ public class GuiStatus extends GuiBase {
     	this.drawString("INT: " + player.getAttributes().getINT(), 25, 180, 0);
     	this.drawString("WIS: " + player.getAttributes().getWIS(), 25, 190, 0);
     	this.drawString("LCK: " + player.getAttributes().getLCK(), 25, 200, 0);
+    	this.drawString("STR Final: " + player.getFinalSTR(), 50, 150, 0);
+    	this.drawString("CON Final: " + player.getFinalCON(), 50, 160, 0);
+    	this.drawString("AGI Final: " + player.getFinalAGI(), 50, 170, 0);
+    	this.drawString("INT Final: " + player.getFinalINT(), 50, 180, 0);
+    	this.drawString("WIS Final: " + player.getFinalWIS(), 50, 190, 0);
+    	this.drawString("LCK Final: " + player.getFinalSTR(), 50, 200, 0);
+    }
+    public void drawStatus(EntityInfo player)
+    {
+    	this.drawString("P.Damage: " + player.getPhysicalDamageMultiplier(), 25, 20, 0);
+    	this.drawString("P.CriticalChance: " + player.getPhysicalCritChance(), 25, 30, 0);
+    	this.drawString("P.CriticalMulti: " + player.getPhysicalCritMultiplier(), 25, 40, 0);
+    	this.drawString("Bonus Health: " + player.getHealthBonus(), 25, 50, 0);
+    	this.drawString("KnockBack Resistance: " + player.getKnockbackResistance(), 25, 60, 0);
+    	this.drawString("MoveSpeed: " + player.getMovSpeed(), 25, 70, 0);
+    	this.drawString("M.Damage: " + player.getMagicalDamageMultiplier(), 25, 80, 0);
+    	this.drawString("M.CriticalChance: " + player.getMagicalCritChance(), 25, 90, 0);
+    	this.drawString("M.CriticalMulti: " + player.getMagicalDamageMultiplier(), 25, 100, 0);    	
     }
 }
