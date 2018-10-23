@@ -51,29 +51,26 @@ public class GuiStatus extends GuiBase {
     }
     public void drawAttribute(EntityInfo player)
     {
-    	this.drawString("STR: " + player.getAttributes().getSTR(), 25, 150, 0);
-    	this.drawString("CON: " + player.getAttributes().getCON(), 25, 160, 0);
-    	this.drawString("AGI: " + player.getAttributes().getAGI(), 25, 170, 0);
-    	this.drawString("INT: " + player.getAttributes().getINT(), 25, 180, 0);
-    	this.drawString("WIS: " + player.getAttributes().getWIS(), 25, 190, 0);
-    	this.drawString("LCK: " + player.getAttributes().getLCK(), 25, 200, 0);
-    	this.drawString("STR Final: " + player.getFinalSTR(), 50, 150, 0);
-    	this.drawString("CON Final: " + player.getFinalCON(), 50, 160, 0);
-    	this.drawString("AGI Final: " + player.getFinalAGI(), 50, 170, 0);
-    	this.drawString("INT Final: " + player.getFinalINT(), 50, 180, 0);
-    	this.drawString("WIS Final: " + player.getFinalWIS(), 50, 190, 0);
-    	this.drawString("LCK Final: " + player.getFinalSTR(), 50, 200, 0);
-    }
+    	this.drawString("STR: " + player.getAttributes().getSTR() + " STR Final: " + player.getFinalSTR(), 25, 150, 0);
+    	this.drawString("CON: " + player.getAttributes().getCON() + " CON Final: " + player.getFinalCON(), 25, 160, 0);
+    	this.drawString("AGI: " + player.getAttributes().getAGI() + " AGI Final: " + player.getFinalAGI(), 25, 170, 0);
+    	this.drawString("INT: " + player.getAttributes().getINT() + " INT Final: " + player.getFinalINT(), 25, 180, 0);
+    	this.drawString("WIS: " + player.getAttributes().getWIS() + " WIS Final: " + player.getFinalWIS(), 25, 190, 0);
+    	this.drawString("LCK: " + player.getAttributes().getLCK() + " LCK Final: " + player.getFinalSTR(), 25, 200, 0);
+    }    
     public void drawStatus(EntityInfo player)
     {
-    	this.drawString("P.Damage: " + player.getPhysicalDamageMultiplier(), 25, 20, 0);
-    	this.drawString("P.CriticalChance: " + player.getPhysicalCritChance(), 25, 30, 0);
-    	this.drawString("P.CriticalMulti: " + player.getPhysicalCritMultiplier(), 25, 40, 0);
-    	this.drawString("Bonus Health: " + player.getHealthBonus(), 25, 50, 0);
-    	this.drawString("KnockBack Resistance: " + player.getKnockbackResistance(), 25, 60, 0);
-    	this.drawString("MoveSpeed: " + player.getMovSpeed(), 25, 70, 0);
-    	this.drawString("M.Damage: " + player.getMagicalDamageMultiplier(), 25, 80, 0);
-    	this.drawString("M.CriticalChance: " + player.getMagicalCritChance(), 25, 90, 0);
-    	this.drawString("M.CriticalMulti: " + player.getMagicalDamageMultiplier(), 25, 100, 0);    	
+    	this.drawString("Class: " + player.getClassType(), 25, 15, 0);
+    	this.drawString("Bonus HP: " + player.getHealthBonus(), 25, 25, 0);
+    	this.drawString("P.Dmg: " + player.getPhysicalDamageMultiplier(), 25, 35, 0);
+    	this.drawString("P.CChance: " + player.getPhysicalCritChance(), 25, 45, 0);
+    	this.drawString("P.CMulti: " + player.getPhysicalCritMultiplier(), 25, 55, 0);
+    	this.drawString("M.Dmg: " + player.getMagicalDamageMultiplier(), 25, 65, 0);
+    	this.drawString("M.CChance: " + player.getMagicalCritChance(), 25, 75, 0);
+    	this.drawString("M.CMulti: " + player.getMagicalDamageMultiplier(), 25, 85, 0);
+    	this.drawString("Drop Bonus: " + player.getDropBonus(), 25, 95, 0);
+    	this.drawString("MoveSpeed: " + player.getMovSpeed(), 25, 105, 0);
+    	this.drawString("AttackSpeed: " + player.getAttackSpeedMultiplier(), 25, 115, 0);
+    	this.drawString("KBack Resistance: " + player.getKnockbackResistance(), 25, 125, 0);
     }
 }
