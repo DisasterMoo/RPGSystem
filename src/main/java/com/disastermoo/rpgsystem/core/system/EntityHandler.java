@@ -123,7 +123,11 @@ public abstract class EntityHandler {
 		level = (int)(level / 2.0f);
 		if(level < 1)level = 1;
 		MobInfo mobInfo = RPGData.INSTANCE.getMobInfo(ent.getClass().getTypeName());
-		if(mobInfo != null && mobInfo.mobCategory == 3)level *= 5;
+		if(mobInfo != null && mobInfo.mobCategory == 3) {
+			level *= 5;
+			for(int i = 0; i < 9; i++)
+				living.world.spawnEntity(new EntityXPOrb(living.world, living.posX + (rd.nextInt(7) - 3), living.posY, living.posZ + (rd.nextInt(7) - 3), level));
+		}
 		living.world.spawnEntity(new EntityXPOrb(living.world, living.posX, living.posY, living.posZ, level));
 	}
 	

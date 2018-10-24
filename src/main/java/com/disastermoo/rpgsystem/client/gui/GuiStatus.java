@@ -23,6 +23,8 @@ import com.disastermoo.rpgsystem.core.config.RPGConfig.Constants;
 import com.disastermoo.rpgsystem.core.system.EntityInfo;
 import com.disastermoo.rpgsystem.core.util.RPGUtils;
 
+import io.netty.handler.codec.http.HttpHeaders.Values;
+
 public class GuiStatus extends GuiBase {
 	
 	public EntityInfo player;
@@ -60,7 +62,7 @@ public class GuiStatus extends GuiBase {
 		for(int i = 1; i <= 6; i++) {
 			addButton(i, x + (i-1) * space, y, 20, 20, "+");
 		}
-		btnSave = new GuiButton(7, x + 6 * space + left, 200 + top, 20, 20, "✓");
+		btnSave = new GuiButton(7, x + 6 * space + left, 200 + top, 20, 20, "O");
 		btnCancel = new GuiButton(8, x + 7 * space + left, 200 + top, 20, 20, "X");
 		this.buttonList.add(btnSave);
 		this.buttonList.add(btnCancel);
@@ -116,12 +118,12 @@ public class GuiStatus extends GuiBase {
 	 {
 		 int finalLevel = Minecraft.getMinecraft().player.experienceLevel - auxlvl;
 		 for(int i = 0; i < 8; i++)this.buttonList.get(i).enabled = true;
-		 if(finalLevel < player.getAttributes().getSTR() / 10)this.buttonList.get(0).enabled = false;
-		 if(finalLevel < player.getAttributes().getAGI() / 10)this.buttonList.get(1).enabled = false;
-		 if(finalLevel < player.getAttributes().getCON() / 10)this.buttonList.get(2).enabled = false;
-		 if(finalLevel < player.getAttributes().getINT() / 10)this.buttonList.get(3).enabled = false;
-		 if(finalLevel < player.getAttributes().getWIS() / 10)this.buttonList.get(4).enabled = false;
-		 if(finalLevel < player.getAttributes().getLCK() / 10)this.buttonList.get(5).enabled = false;
+		 if(finalLevel < (player.getAttributes().getSTR() + value.pointsSTR) / 10)this.buttonList.get(0).enabled = false;
+		 if(finalLevel < (player.getAttributes().getAGI() + value.pointsAGI)  / 10)this.buttonList.get(1).enabled = false;
+		 if(finalLevel < (player.getAttributes().getCON() + value.pointsCON)  / 10)this.buttonList.get(2).enabled = false;
+		 if(finalLevel < (player.getAttributes().getINT() + value.pointsINT)  / 10)this.buttonList.get(3).enabled = false;
+		 if(finalLevel < (player.getAttributes().getWIS() + value.pointsWIS)  / 10)this.buttonList.get(4).enabled = false;
+		 if(finalLevel < (player.getAttributes().getLCK() + value.pointsLCK)  / 10)this.buttonList.get(5).enabled = false;
 		 if(auxlvl > 0) {
 			 btnSave.enabled = true;
 			 btnCancel.enabled = true;
