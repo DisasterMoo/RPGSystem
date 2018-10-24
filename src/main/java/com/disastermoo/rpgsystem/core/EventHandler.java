@@ -84,8 +84,8 @@ public class EventHandler {
 	}
 	
 	@SubscribeEvent
-	public static void onPlayerAttack(LivingHurtEvent event){
-		if(!event.getEntity().world.isRemote)EntityHandler.onPlayerAttack(event);
+	public static void onAttack(LivingHurtEvent event){
+		if(!event.getEntity().world.isRemote)EntityHandler.onAttackReceived(event);
 	}
 	
 	@SubscribeEvent(priority=EventPriority.LOW, receiveCanceled=false)

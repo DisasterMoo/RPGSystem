@@ -14,6 +14,7 @@ import com.disastermoo.rpgsystem.core.capabilities.IRPGInfo;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -124,29 +125,30 @@ public abstract class EntityHandler {
 		living.world.spawnEntity(new EntityXPOrb(living.world, living.posX, living.posY, living.posZ, level));
 	}
 	
-	public static void onPlayerAttack(LivingHurtEvent event)
+	public static void onAttackReceived(LivingHurtEvent event)
 	{
-		if(!(event.getSource().getTrueSource() instanceof EntityPlayer))return;
-		EntityPlayer player = (EntityPlayer)event.getSource().getTrueSource();
-		EntityInfo infoPlayer = RPGUtils.getRPGInfo(player).getInfo();
+		if(!(event.getSource().getTrueSource() instanceof EntityLivingBase))return;
+		EntityLivingBase sourceEntity = (EntityLivingBase)event.getSource().getTrueSource();
+		EntityInfo infoSource = RPGUtils.getRPGInfo(sourceEntity).getInfo();
 		float amount = 0;
 		boolean crit = false;
 		if(event.getSource().isMagicDamage()) {
-			amount = infoPlayer.getMagicalDamageMultiplier() * event.getAmount();
-			if(rd.nextFloat() < infoPlayer.getMagicalCritChance()) {
-				amount *= infoPlayer.getMagicalCritMultiplier();
+			amount = infoSource.getMagicalDamageMultiplier() * event.getAmount();
+			if(rd.nextFloat() < infoSource.getMagicalCritChance()) {
+				amount *= infoSource.getMagicalCritMultiplier();
 				crit = true;
 			}
 		}else {
-			amount = infoPlayer.getPhysicalDamageMultiplier() * event.getAmount();
-			if(rd.nextFloat() < infoPlayer.getPhysicalCritChance()) {
-				amount *= infoPlayer.getPhysicalCritMultiplier();
+			amount = infoSource.getPhysicalDamageMultiplier() * event.getAmount();
+			if(rd.nextFloat() < infoSource.getPhysicalCritChance()) {
+				amount *= infoSource.getPhysicalCritMultiplier();
 				crit = true;
 			}
 		}
 		event.setAmount(amount);
 		if(crit) {
-			player.sendMessage(new TextComponentTranslation("rpgsystem.message.critical"));
+			if(sourceEntity instanceof EntityPlayer)
+				((EntityPlayer)sourceEntity).sendMessage(new TextComponentTranslation("rpgsystem.message.critical"));
 		}
 	}
 	
