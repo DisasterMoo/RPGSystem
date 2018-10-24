@@ -83,4 +83,34 @@ public class Attribute {
 	{
 		if(value >= 10)this.LCK = value;
 	}
+	
+	public void addSTR(int value)
+	{
+		this.STR += value;
+	}
+	
+	public void addAGI(int value)
+	{
+		this.AGI += value;
+	}
+	
+	public void addINT(int value)
+	{
+		this.INT += value;
+	}
+	
+	public void addCON(int value)
+	{
+		this.CON += value;
+	}
+	
+	public void addWIS(int value)
+	{
+		this.WIS += value;
+	}
+	
+	public void addLCK(int value)
+	{
+		this.LCK += value;
+	}
 }

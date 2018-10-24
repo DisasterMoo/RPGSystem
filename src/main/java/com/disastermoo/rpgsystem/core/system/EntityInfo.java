@@ -6,6 +6,9 @@ import com.disastermoo.rpgsystem.core.item.Materia;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 
 public class EntityInfo {
@@ -14,14 +17,11 @@ public class EntityInfo {
 	private Class.Type classType;
 	private boolean isMateriaSlotEnabled[] = {false, false, false, false, false, false, false};
 	
-	public boolean isNew;
-	
 	public EntityInfo()
 	{
 		materiaSlot = new ItemStack[7];
 		attributes = new Attribute();
-		isNew = false;
-		classType = Class.Type.Fighter;
+		classType = null;
 	}
 	
 	public ItemStack getMateriaInSlot(int i)
@@ -57,70 +57,6 @@ public class EntityInfo {
 	public void setMateriaSlotEnabled(int i, boolean value)
 	{
 		isMateriaSlotEnabled[i] = value;
-	}
-	
-	public static EntityInfo loadFromNBT(Entity ent)
-	{
-		EntityInfo ret = new EntityInfo();
-		NBTTagCompound rpgData = (NBTTagCompound)ent.getEntityData().getTag("RPGSystem");
-		if(rpgData == null) {
-			ret.isNew = true;
-			for(int i = 0; i< 7; i++) {
-				ret.setMateriaSlotEnabled(i, false);
-				ret.setMateriaInSlot(i, null);
-			}
-			ret.setClassType(Class.Type.Fighter);
-		}else {
-			for(int i = 0; i < 7; i++)
-			{
-				int meta = rpgData.getInteger("MateriaSlot" + (i+1));
-				if(meta == -1) {
-					ret.setMateriaSlotEnabled(i, false);
-					ret.setMateriaInSlot(i, null);
-				}else if(meta == 0) {
-					ret.setMateriaSlotEnabled(i, true);
-					ret.setMateriaInSlot(i, null);
-				}else {
-					ret.setMateriaSlotEnabled(i, true);
-					ret.setMateriaInSlot(i, new ItemStack(RegistryHandler.INSTANCE.items.materia, 1, meta));
-				}
-			}
-			
-			ret.getAttributes().setSTR(rpgData.getInteger("STR"));
-			ret.getAttributes().setAGI(rpgData.getInteger("AGI"));
-			ret.getAttributes().setCON(rpgData.getInteger("CON"));
-			ret.getAttributes().setINT(rpgData.getInteger("INT"));
-			ret.getAttributes().setWIS(rpgData.getInteger("WIS"));
-			ret.getAttributes().setLCK(rpgData.getInteger("LCK"));
-			ret.setClassType(Class.Type.getTypeByID(rpgData.getInteger("Class")));
-		}
-		return ret;
-	}
-	
-	public void saveToNBT(Entity ent)
-	{
-		NBTTagCompound rpgData = new NBTTagCompound();
-		for(int i = 0; i < 7; i++)
-		{
-			if(this.isMateriaSlotEnabled(i)) {
-				ItemStack inSlot = this.getMateriaInSlot(i);
-				if(inSlot != null)
-					rpgData.setInteger("MateriaSlot" + (i+1), this.getMateriaInSlot(i).getMetadata());
-				else
-					rpgData.setInteger("MateriaSlot" + (i+1), 0);
-			}else {
-				rpgData.setInteger("MateriaSlot" + (i+1), -1);
-			}
-		}
-		rpgData.setInteger("STR", this.getAttributes().getSTR());
-		rpgData.setInteger("AGI", this.getAttributes().getAGI());
-		rpgData.setInteger("CON", this.getAttributes().getCON());
-		rpgData.setInteger("INT", this.getAttributes().getINT());
-		rpgData.setInteger("WIS", this.getAttributes().getWIS());
-		rpgData.setInteger("LCK", this.getAttributes().getLCK());
-		rpgData.setInteger("Class", this.getClassType().getID());
-		
-		ent.getEntityData().setTag("RPGSystem", rpgData);
 	}
 	
 	public float getFinalSTR()
@@ -204,7 +140,7 @@ public class EntityInfo {
 	public float getHealthBonus()
 	{
 		
-		return (this.getFinalCON() - 10) / 1.5f;
+		return 5 + this.getFinalCON() / 1.5f;
 	}
 	
 	public float getAttackSpeedMultiplier()
@@ -219,7 +155,9 @@ public class EntityInfo {
 	
 	public float getPhysicalCritChance()
 	{
-		return 0.02f + ((this.getFinalLCK() - 10) / 500);
+		float ret = 0.02f + ((this.getFinalLCK() - 10) / 500);
+		if(ret > 1F)ret = 1F;
+		return ret;
 	}
 	
 	public float getPhysicalCritMultiplier()
@@ -239,7 +177,9 @@ public class EntityInfo {
 	
 	public float getMagicalCritChance()
 	{
-		return 0.02f + ((this.getFinalLCK() - 10) / 500);
+		float ret = 0.02f + ((this.getFinalLCK() - 10) / 500);
+		if(ret > 1F)ret = 1F;
+		return ret;
 	}
 	
 	public float getDropBonus()

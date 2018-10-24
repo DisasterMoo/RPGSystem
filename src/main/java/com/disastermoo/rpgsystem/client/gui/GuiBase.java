@@ -8,10 +8,10 @@ import org.lwjgl.opengl.GL11;
 
 import com.disastermoo.rpgsystem.client.util.ModResource;
 import com.disastermoo.rpgsystem.client.util.RenderRotation;
-import com.disastermoo.rpgsystem.core.system.Attribute;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -301,8 +301,9 @@ public class GuiBase extends GuiScreen {
         GlStateManager.popMatrix();
     }
 
-    public void drawCenteredString(String str, int x, int y, float mult, int width, int height, int color) {
-        drawString(str, x + (width - (int) (fontRenderer.getStringWidth(str) * mult)) / 2, y + (height - (int) ((fontRenderer.FONT_HEIGHT - 2) * mult)) / 2, mult, color);
+    public void drawCenteredString(String str, int x, int y, float mult, int color) {
+    	float strWidth = fontRenderer.getStringWidth(str) * mult;
+    	drawString(str, (int)(x - strWidth / 2), y, mult, color);
     }
 
     public List<String> getLinesFromText(String str, float mult, int width) {

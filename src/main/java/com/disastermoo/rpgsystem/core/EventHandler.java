@@ -1,21 +1,28 @@
 package com.disastermoo.rpgsystem.core;
 
 import com.disastermoo.rpgsystem.RPGSystem;
+import com.disastermoo.rpgsystem.core.capabilities.IRPGInfo;
+import com.disastermoo.rpgsystem.core.capabilities.RPGInfoProvider;
 import com.disastermoo.rpgsystem.core.config.RPGConfig.Constants;
 import com.disastermoo.rpgsystem.core.item.ItemBase;
 import com.disastermoo.rpgsystem.core.system.EntityHandler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -27,6 +34,8 @@ import net.minecraftforge.common.config.Config;
 
 @Mod.EventBusSubscriber(modid = Constants.MODID)
 public class EventHandler {
+	
+	public static final ResourceLocation RPGINFO = new ResourceLocation(Constants.MODID, "RPGSystem");
 	
 	@SubscribeEvent
     public static void onConfigChangedEvent(OnConfigChangedEvent event)
@@ -45,6 +54,23 @@ public class EventHandler {
 			event.getRegistry().register(it);
 		}
 	}
+	
+	@SubscribeEvent
+	public static void onPlayerClone(PlayerEvent.Clone event)
+	{
+		EntityPlayer player = event.getEntityPlayer();
+		IRPGInfo newData = player.getCapability(RPGInfoProvider.RPGINFO_CAP, null);
+		IRPGInfo oldData = event.getOriginal().getCapability(RPGInfoProvider.RPGINFO_CAP, null);
+	
+		newData.setInfo(oldData.getInfo());
+	}
+	
+	@SubscribeEvent
+    public static void attachCapability(AttachCapabilitiesEvent<Entity> event)
+    {
+        if (!(event.getObject() instanceof EntityLiving) && !(event.getObject() instanceof EntityPlayer)) return;
+        event.addCapability(RPGINFO, new RPGInfoProvider());
+    }
 	
 	@SubscribeEvent
 	public static void onEntityDeath(LivingDeathEvent event){
@@ -75,7 +101,7 @@ public class EventHandler {
 		KeyBinding[] keys = ((ProxyClient)RPGSystem.proxy).getKeyBiding();
 	    if (keys[0].isPressed()) 
 	    {
-	    	Minecraft.getMinecraft().player.openGui(RPGSystem.INSTANCE, GuiHandler.GUI_SKILL_TREE, 
+	    	Minecraft.getMinecraft().player.openGui(RPGSystem.INSTANCE, GuiHandler.GUI_STATUS, 
 	    			Minecraft.getMinecraft().player.world, (int)Minecraft.getMinecraft().player.posX, (int)Minecraft.getMinecraft().player.posY, (int)Minecraft.getMinecraft().player.posZ);
 	    }	
 	}
