@@ -264,6 +264,6 @@ public class GuiStatus extends GuiBase {
     	this.drawString("Mv. Spd: " + RPGUtils.formatString(player.getMovSpeed() * 10) + "x", x, 70, 0.5f, 0);
     	this.drawString("M. Dmg: " + RPGUtils.formatString(player.getMagicalDamageMultiplier()) + "x", x, 80, 0.5f, 0);
     	this.drawString("M. Crit. %: " + RPGUtils.formatString(player.getMagicalCritChance() * 100 ) + "%", x, 90, 0.5f, 0);
-    	this.drawString("M. Crit.: " + RPGUtils.formatString(player.getMagicalDamageMultiplier()) + "x", x, 100, 0.5f, 0);    	
+    	this.drawString("M. Crit.: " + RPGUtils.formatString(player.getMagicalCritMultiplier()) + "x", x, 100, 0.5f, 0);    	
     }
 }

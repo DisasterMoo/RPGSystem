@@ -21,6 +21,7 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -59,7 +60,7 @@ public abstract class EntityHandler {
 			enInfo.getAttributes().setWIS((int)(getBonus(Type.WIS, mobInfo.mobCategory) * getAttributeGain(useLevel)));
 			enInfo.getAttributes().setLCK((int)(getBonus(Type.LCK, mobInfo.mobCategory) * getAttributeGain(useLevel)));
 			
-			living.setAlwaysRenderNameTag(true);
+			//living.setAlwaysRenderNameTag(false);
 			living.setCustomNameTag("Lv. " + useLevel);
 			try {
 				living.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(enInfo.getHealthBonus() * 3);
@@ -133,28 +134,51 @@ public abstract class EntityHandler {
 	
 	public static void onAttackReceived(LivingHurtEvent event)
 	{
-		if(!(event.getSource().getTrueSource() instanceof EntityLivingBase))return;
-		EntityLivingBase sourceEntity = (EntityLivingBase)event.getSource().getTrueSource();
-		EntityInfo infoSource = RPGUtils.getRPGInfo(sourceEntity).getInfo();
-		float amount = 0;
-		boolean crit = false;
-		if(event.getSource().isMagicDamage()) {
-			amount = infoSource.getMagicalDamageMultiplier() * event.getAmount();
-			if(rd.nextFloat() < infoSource.getMagicalCritChance()) {
-				amount *= infoSource.getMagicalCritMultiplier();
-				crit = true;
-			}
+		EntityLivingBase receivingEntity = event.getEntityLiving();
+		if(!(event.getSource().getTrueSource() instanceof EntityLivingBase)) {
+			MobInfo mobInfo = RPGData.INSTANCE.getMobInfo(event.getEntity().getClass().getTypeName());
+			System.out.println(event.getSource().getImmediateSource());
+			if(event.getSource() == DamageSource.WITHER) {
+				if(mobInfo != null && mobInfo.mobCategory == 3) {
+					event.setAmount(10);
+				}else {
+					event.setAmount(10 + receivingEntity.getMaxHealth() * 0.02f);
+				}
+			}else
+			if(event.getSource() == DamageSource.LAVA) {
+				event.setAmount(50);
+			}else
+			if(event.getSource().isFireDamage() || event.getSource().isMagicDamage()) {
+				if(mobInfo != null && mobInfo.mobCategory == 3) {
+					event.setAmount(5);
+				}else {
+					event.setAmount(5 + receivingEntity.getMaxHealth() * 0.01f);
+				}
+			}else
+				event.setAmount(event.getAmount() * 3);
 		}else {
-			amount = infoSource.getPhysicalDamageMultiplier() * event.getAmount();
-			if(rd.nextFloat() < infoSource.getPhysicalCritChance()) {
-				amount *= infoSource.getPhysicalCritMultiplier();
-				crit = true;
+			EntityLivingBase sourceEntity = (EntityLivingBase)event.getSource().getTrueSource();
+			EntityInfo infoSource = RPGUtils.getRPGInfo(sourceEntity).getInfo();
+			float amount = 0;
+			boolean crit = false;
+			if(event.getSource().isMagicDamage()) {
+				amount = infoSource.getMagicalDamageMultiplier() * event.getAmount();
+				if(rd.nextFloat() < infoSource.getMagicalCritChance()) {
+					amount *= infoSource.getMagicalCritMultiplier();
+					crit = true;
+				}
+			}else {
+				amount = infoSource.getPhysicalDamageMultiplier() * event.getAmount();
+				if(rd.nextFloat() < infoSource.getPhysicalCritChance()) {
+					amount *= infoSource.getPhysicalCritMultiplier();
+					crit = true;
+				}
 			}
-		}
-		event.setAmount(amount);
-		if(crit) {
-			if(sourceEntity instanceof EntityPlayer)
-				((EntityPlayer)sourceEntity).sendMessage(new TextComponentTranslation("rpgsystem.message.critical"));
+			event.setAmount(amount);
+			if(crit) {
+				if(sourceEntity instanceof EntityPlayer)
+					((EntityPlayer)sourceEntity).sendMessage(new TextComponentTranslation("rpgsystem.message.critical"));
+			}
 		}
 	}
 	
