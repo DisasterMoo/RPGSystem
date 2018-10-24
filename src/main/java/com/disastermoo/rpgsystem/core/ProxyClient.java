@@ -3,28 +3,27 @@ package com.disastermoo.rpgsystem.core;
 
 import org.lwjgl.input.Keyboard;
 
+import com.disastermoo.rpgsystem.core.capabilities.network.RPGInfoMessage;
+import com.disastermoo.rpgsystem.core.system.EntityInfo;
+
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ProxyClient extends ProxyCommon {
-	//TODO CLIENT ONLY REGISTER THINGS!
+	private EntityInfo clientInfo;
+	private boolean markUpdate;
 	
 	private static KeyBinding[] keys;
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
     {
     	super.preInit(event);
+    	clientInfo = null;
+    	markUpdate = true;
     }
 
 	@Override
@@ -37,6 +36,7 @@ public class ProxyClient extends ProxyCommon {
     	{
     	    ClientRegistry.registerKeyBinding(keys[i]);
     	}
+    	NETWORK_INSTANCE.registerMessage(RPGInfoMessage.RPGInfoMessageHandler.class, RPGInfoMessage.class, 0, Side.CLIENT);
     }
     
 	@Override
@@ -50,6 +50,24 @@ public class ProxyClient extends ProxyCommon {
 		return this.keys;
 	}
 	
-
+	public EntityInfo getClientInfo()
+	{
+		return this.clientInfo;
+	}
+	
+	public void setClientInfo(EntityInfo info)
+	{
+		this.clientInfo = info;
+	}
+	
+	public void markUpdate(boolean value)
+	{
+		this.markUpdate = value;
+	}
+	
+	public boolean isMarkedForUpdate()
+	{
+		return this.markUpdate;
+	}
 
 }

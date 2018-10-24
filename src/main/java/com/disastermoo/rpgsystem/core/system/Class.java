@@ -11,7 +11,8 @@ public abstract class Class {
 		Archer(7, 15, 0, Attribute.Type.AGI, Attribute.Type.STR, 8),
 		Hunter(8, 35, 15, Attribute.Type.AGI, Attribute.Type.STR, 0),
 		Barbarian(9, 10, 5, Attribute.Type.STR, Attribute.Type.CON, 10),
-		Berserker(10, 35, 15, Attribute.Type.STR, Attribute.Type.CON, 0);
+		Berserker(10, 35, 15, Attribute.Type.STR, Attribute.Type.CON, 0),
+		NONE(11, 0, 0, Attribute.Type.STR, Attribute.Type.STR, 0);
 		
 		private int id;
 		private int priBonus, secBonus;
@@ -51,6 +52,8 @@ public abstract class Class {
 				return Barbarian;
 			case 10:
 				return Berserker;
+			case 11:
+				return NONE;
 			default:
 					return null;
 			}
