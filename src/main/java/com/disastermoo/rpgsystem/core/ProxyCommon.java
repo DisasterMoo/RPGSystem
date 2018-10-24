@@ -9,6 +9,7 @@ import com.disastermoo.rpgsystem.core.capabilities.RPGInfoProvider;
 import com.disastermoo.rpgsystem.core.capabilities.RPGInfoStorage;
 import com.disastermoo.rpgsystem.core.capabilities.network.RPGUpgradeMessage;
 import com.disastermoo.rpgsystem.core.config.RPGConfig.Constants;
+import com.disastermoo.rpgsystem.core.util.RPGUtils;
 
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -16,6 +17,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraft.entity.EntityList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.config.Config.Type;
 import net.minecraftforge.common.config.ConfigManager;
@@ -42,6 +45,6 @@ public class ProxyCommon {
     }
     
     public void postInit(FMLPostInitializationEvent event) {
-        
+    	RPGUtils.registerAllEntities();
     }
 }

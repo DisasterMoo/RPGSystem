@@ -2,13 +2,13 @@
 {
   "modid": "rpgsystem",
   "name": "RPG System",
-  "description": "Example placeholder mod.",
+  "description": "RPG System for minecraft.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
+  "authorList": ["DisasterMoo"],
+  "credits": "The Forge and FML guys, IE and Embers mods for sharing some of their code.",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

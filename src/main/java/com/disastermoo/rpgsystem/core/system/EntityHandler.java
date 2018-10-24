@@ -48,7 +48,9 @@ public abstract class EntityHandler {
 			enInfo.setClassType(Class.Type.Fighter);
 			int range = (int)(mobInfo.mobLevel * 0.3);
 			if(range < 1)range = 1;
+			if(range > 8)range = 8;
 			int useLevel = mobInfo.mobLevel + rd.nextInt(range) - rd.nextInt(range);
+			if(mobInfo.mobCategory == 3)useLevel = mobInfo.mobLevel;
 			if(useLevel < 0)useLevel = 1;
 			enInfo.getAttributes().setSTR((int)(getBonus(Type.STR, mobInfo.mobCategory) * getAttributeGain(useLevel)));
 			enInfo.getAttributes().setAGI((int)(getBonus(Type.AGI, mobInfo.mobCategory) * getAttributeGain(useLevel)));
@@ -58,9 +60,9 @@ public abstract class EntityHandler {
 			enInfo.getAttributes().setLCK((int)(getBonus(Type.LCK, mobInfo.mobCategory) * getAttributeGain(useLevel)));
 			
 			living.setAlwaysRenderNameTag(true);
-			living.setCustomNameTag("Lv. " + useLevel) ;
+			living.setCustomNameTag("Lv. " + useLevel);
 			try {
-				living.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue((enInfo.getHealthBonus() + living.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue()) * 3);
+				living.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(enInfo.getHealthBonus() * 3);
 				living.setHealth((float)living.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue());
 				
 				living.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(enInfo.getPhysicalDamageMultiplier() * living.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getBaseValue());
@@ -167,13 +169,17 @@ public abstract class EntityHandler {
 		case 1:
 			if(attType == Attribute.Type.CON || attType == Attribute.Type.STR)return 1.3;
 			if(attType == Attribute.Type.AGI || attType == Attribute.Type.INT)return 0.7;
+			break;
 		case 2:
 			if(attType == Attribute.Type.CON || attType == Attribute.Type.STR)return 0.7;
 			if(attType == Attribute.Type.AGI || attType == Attribute.Type.INT)return 1.3;
+			break;
 		case 3:
-			return 3;
+			if(attType == Attribute.Type.CON)return 10;
+			return 1.5;
 		default:
 			return 1;
 		}
+		return 1;
 	}
 }

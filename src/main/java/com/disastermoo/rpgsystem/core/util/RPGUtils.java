@@ -8,6 +8,11 @@ import com.disastermoo.rpgsystem.core.config.RPGData.MobInfo;
 import com.disastermoo.rpgsystem.core.system.EntityInfo;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 
 public abstract class RPGUtils {
 
@@ -86,5 +91,21 @@ public abstract class RPGUtils {
 	        return String.format("%d",(long)d);
 	    else
 	        return new java.text.DecimalFormat("#.##").format(d);
+	}
+	
+	public static final void registerAllEntities()
+	{
+		for(ResourceLocation res : EntityList.getEntityNameList())
+        {
+        	Class<?> cl = EntityList.getClass(res);
+        	if(cl != null && EntityLivingBase.class.isAssignableFrom(cl)) {
+        		MobInfo mobInfo = RPGUtils.getMobInfo(cl.getTypeName());
+        		if(mobInfo == null) {
+        			RPGData.INSTANCE.addNewMob(cl.getTypeName(), 1, 0, null);
+        			mobInfo = RPGData.INSTANCE.getMobInfo(cl.getTypeName());
+        			RPGData.INSTANCE.save();
+        		}
+        	}
+        }
 	}
 }
