@@ -77,11 +77,11 @@ public abstract class RPGUtils {
 	public static final int minLevel(EntityInfo info)
 	{
 		int minLevel = info.getAttributes().getSTR() / 10;
-		if(minLevel < info.getAttributes().getAGI() / 10)minLevel = info.getAttributes().getAGI() / 10;
-		if(minLevel < info.getAttributes().getCON() / 10)minLevel = info.getAttributes().getCON() / 10;
-		if(minLevel < info.getAttributes().getINT() / 10)minLevel = info.getAttributes().getINT() / 10;
-		if(minLevel < info.getAttributes().getWIS() / 10)minLevel = info.getAttributes().getWIS() / 10;
-		if(minLevel < info.getAttributes().getLCK() / 10)minLevel = info.getAttributes().getLCK() / 10;
+		if(minLevel > info.getAttributes().getAGI() / 10)minLevel = info.getAttributes().getAGI() / 10;
+		if(minLevel > info.getAttributes().getCON() / 10)minLevel = info.getAttributes().getCON() / 10;
+		if(minLevel > info.getAttributes().getINT() / 10)minLevel = info.getAttributes().getINT() / 10;
+		if(minLevel > info.getAttributes().getWIS() / 10)minLevel = info.getAttributes().getWIS() / 10;
+		if(minLevel > info.getAttributes().getLCK() / 10)minLevel = info.getAttributes().getLCK() / 10;
 		return minLevel;
 	}
 	

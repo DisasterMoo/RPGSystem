@@ -30,6 +30,12 @@ public abstract class EntityHandler {
 	
 	private static Random rd = new Random();
 	
+	
+	/*
+	 * TODO: ARRUMAR PROBLEMA NA GUI: SO MOSTRA QUANDO O MAIOR ATTRIBUTO PUDER SER CLICADO(TO COM LEVEL MAS NAO MOSTRA OS BOTAO)
+	 * VER SE É POSSIVEL ARRUMAR O CLOUD DAMAGE DO THAUMCRAFT(super op)
+	 */
+	
 	public static void onSpawn(Entity ent)
 	{
 		if(ent instanceof EntityPlayer) {
@@ -58,9 +64,8 @@ public abstract class EntityHandler {
 			enInfo.getAttributes().setCON((int)(getBonus(Type.CON, mobInfo.mobCategory) * getAttributeGain(useLevel)));
 			enInfo.getAttributes().setINT((int)(getBonus(Type.INT, mobInfo.mobCategory) * getAttributeGain(useLevel)));
 			enInfo.getAttributes().setWIS((int)(getBonus(Type.WIS, mobInfo.mobCategory) * getAttributeGain(useLevel)));
-			enInfo.getAttributes().setLCK((int)(getBonus(Type.LCK, mobInfo.mobCategory) * getAttributeGain(useLevel)));
+			enInfo.getAttributes().setLCK(25);
 			
-			//living.setAlwaysRenderNameTag(false);
 			living.setCustomNameTag("Lv. " + useLevel);
 			try {
 				living.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(enInfo.getHealthBonus() * 3);
@@ -158,25 +163,32 @@ public abstract class EntityHandler {
 				event.setAmount(event.getAmount() * 3);
 		}else {
 			EntityLivingBase sourceEntity = (EntityLivingBase)event.getSource().getTrueSource();
+			boolean isPlayer = sourceEntity instanceof EntityPlayer;
 			EntityInfo infoSource = RPGUtils.getRPGInfo(sourceEntity).getInfo();
 			float amount = 0;
 			boolean crit = false;
 			if(event.getSource().isMagicDamage()) {
 				amount = infoSource.getMagicalDamageMultiplier() * event.getAmount();
 				if(rd.nextFloat() < infoSource.getMagicalCritChance()) {
-					amount *= infoSource.getMagicalCritMultiplier();
+					if(isPlayer)
+						amount *= infoSource.getMagicalCritMultiplier();
+					else
+						amount *= 2;
 					crit = true;
 				}
 			}else {
 				amount = infoSource.getPhysicalDamageMultiplier() * event.getAmount();
 				if(rd.nextFloat() < infoSource.getPhysicalCritChance()) {
-					amount *= infoSource.getPhysicalCritMultiplier();
+					if(isPlayer)
+						amount *= infoSource.getPhysicalCritMultiplier();
+					else
+						amount *= 2;
 					crit = true;
 				}
 			}
 			event.setAmount(amount);
 			if(crit) {
-				if(sourceEntity instanceof EntityPlayer)
+				if(isPlayer)
 					((EntityPlayer)sourceEntity).sendMessage(new TextComponentTranslation("rpgsystem.message.critical"));
 			}
 		}

@@ -1,14 +1,6 @@
 package com.disastermoo.rpgsystem.core.system;
 
-import com.disastermoo.rpgsystem.core.RegistryHandler;
-import com.disastermoo.rpgsystem.core.item.Materia;
-
-import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 
 public class EntityInfo {
@@ -140,7 +132,7 @@ public class EntityInfo {
 	public float getHealthBonus()
 	{
 		
-		return 5 + this.getFinalCON() / 1.5f;
+		return this.getFinalCON() * 2.0F;
 	}
 	
 	public float getAttackSpeedMultiplier()
@@ -150,41 +142,45 @@ public class EntityInfo {
 	
 	public float getPhysicalDamageMultiplier()
 	{
-		return 1 + this.getFinalSTR() / 30 - 0.333f;
+		return 1 + this.getFinalSTR() / 100 + this.getFinalAGI() / 200;
 	}
 	
 	public float getPhysicalCritChance()
 	{
-		float ret = 0.02f + ((this.getFinalLCK() - 10) / 500);
+		float ret = 0.02f + (this.getFinalLCK() / 4000);
 		if(ret > 1F)ret = 1F;
 		return ret;
 	}
 	
 	public float getPhysicalCritMultiplier()
 	{
-		return 1.8f + this.getFinalAGI() / 50;
+		float mult = 1.5f + this.getFinalSTR() / 200 + this.getFinalAGI() / 100;
+		if(mult > 3F) mult = 3F;
+		return mult;
 	}
 	
 	public float getMagicalDamageMultiplier()
 	{
-		return 1 + this.getFinalINT() / 30 - 0.333f;
+		return 1 + this.getFinalINT() / 100 + this.getFinalWIS() / 200;
 	}
 	
 	public float getMagicalCritMultiplier()
 	{
-		return 1.8f + this.getFinalWIS() / 50;
+		float mult = 1.5f + this.getFinalINT() / 200 + this.getFinalWIS() / 100;
+		if(mult > 3F) mult = 3F;
+		return mult;
 	}
 	
 	public float getMagicalCritChance()
 	{
-		float ret = 0.02f + ((this.getFinalLCK() - 10) / 500);
+		float ret = 0.02f + (this.getFinalLCK() / 4000);
 		if(ret > 1F)ret = 1F;
 		return ret;
 	}
 	
 	public float getDropBonus()
 	{
-		return 1.0f + (this.getFinalLCK() / 50);
+		return 1.0f + (this.getFinalLCK() / 100);
 	}
 	
 	public float getKnockbackResistance()
