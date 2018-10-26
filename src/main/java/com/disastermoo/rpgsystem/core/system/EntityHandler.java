@@ -68,7 +68,7 @@ public abstract class EntityHandler {
 			
 			living.setCustomNameTag("Lv. " + useLevel);
 			try {
-				living.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(enInfo.getHealthBonus() * 3);
+				living.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(enInfo.getHealthBonus() * 1.5f);
 				living.setHealth((float)living.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue());
 				
 				living.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(enInfo.getPhysicalDamageMultiplier() * living.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getBaseValue());
@@ -142,7 +142,6 @@ public abstract class EntityHandler {
 		EntityLivingBase receivingEntity = event.getEntityLiving();
 		if(!(event.getSource().getTrueSource() instanceof EntityLivingBase)) {
 			MobInfo mobInfo = RPGData.INSTANCE.getMobInfo(event.getEntity().getClass().getTypeName());
-			System.out.println(event.getSource().getImmediateSource());
 			if(event.getSource() == DamageSource.WITHER) {
 				if(mobInfo != null && mobInfo.mobCategory == 3) {
 					event.setAmount(10);
@@ -167,20 +166,20 @@ public abstract class EntityHandler {
 			EntityInfo infoSource = RPGUtils.getRPGInfo(sourceEntity).getInfo();
 			float amount = 0;
 			boolean crit = false;
-			if(event.getSource().isMagicDamage()) {
-				amount = infoSource.getMagicalDamageMultiplier() * event.getAmount();
-				if(rd.nextFloat() < infoSource.getMagicalCritChance()) {
+			if(event.getSource().damageType.equalsIgnoreCase("player") || event.getSource().damageType.equalsIgnoreCase("arrow")) {
+				amount = infoSource.getPhysicalDamageMultiplier() * event.getAmount();
+				if(rd.nextFloat() < infoSource.getPhysicalCritChance()) {
 					if(isPlayer)
-						amount *= infoSource.getMagicalCritMultiplier();
+						amount *= infoSource.getPhysicalCritMultiplier();
 					else
 						amount *= 2;
 					crit = true;
 				}
 			}else {
-				amount = infoSource.getPhysicalDamageMultiplier() * event.getAmount();
-				if(rd.nextFloat() < infoSource.getPhysicalCritChance()) {
+				amount = infoSource.getMagicalDamageMultiplier() * event.getAmount();
+				if(rd.nextFloat() < infoSource.getMagicalCritChance()) {
 					if(isPlayer)
-						amount *= infoSource.getPhysicalCritMultiplier();
+						amount *= infoSource.getMagicalCritMultiplier();
 					else
 						amount *= 2;
 					crit = true;
@@ -215,7 +214,7 @@ public abstract class EntityHandler {
 			if(attType == Attribute.Type.AGI || attType == Attribute.Type.INT)return 1.3;
 			break;
 		case 3:
-			if(attType == Attribute.Type.CON)return 10;
+			if(attType == Attribute.Type.CON)return 20;
 			return 1.5;
 		default:
 			return 1;
