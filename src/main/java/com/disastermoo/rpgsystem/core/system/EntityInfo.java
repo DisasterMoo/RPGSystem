@@ -192,8 +192,8 @@ public class EntityInfo {
 	
 	public float getMovSpeed()
 	{
-		float value = 0.1f + this.getFinalAGI() / 1600.0f;
-		if(value > 0.25f)value = 0.25f;
+		float value = 0.1f + this.getFinalAGI() / 3600.0f;
+		if(value > 0.18f)value = 0.18f;
 		return value;
 	}
 }

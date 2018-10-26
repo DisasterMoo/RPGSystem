@@ -21,6 +21,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
@@ -63,6 +64,12 @@ public class EventHandler {
 		IRPGInfo oldData = event.getOriginal().getCapability(RPGInfoProvider.RPGINFO_CAP, null);
 	
 		newData.setInfo(oldData.getInfo());
+	}
+	
+	@SubscribeEvent
+	public static void onHeal(LivingHealEvent event)
+	{
+		EntityHandler.onHeal(event);
 	}
 	
 	@SubscribeEvent

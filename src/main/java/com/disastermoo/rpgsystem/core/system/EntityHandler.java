@@ -24,18 +24,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 public abstract class EntityHandler {
 	
 	private static Random rd = new Random();
-	
-	
-	/*
-	 * TODO: ARRUMAR PROBLEMA NA GUI: SO MOSTRA QUANDO O MAIOR ATTRIBUTO PUDER SER CLICADO(TO COM LEVEL MAS NAO MOSTRA OS BOTAO)
-	 * VER SE É POSSIVEL ARRUMAR O CLOUD DAMAGE DO THAUMCRAFT(super op)
-	 */
-	
+		
 	public static void onSpawn(Entity ent)
 	{
 		if(ent instanceof EntityPlayer) {
@@ -52,7 +47,7 @@ public abstract class EntityHandler {
 		}
 		EntityInfo enInfo = RPGUtils.getRPGInfo(living).getInfo();
 		if(enInfo.getClassType() == null) {
-			enInfo.setClassType(Class.Type.Fighter);
+			enInfo.setClassType(Class.Type.NONE);
 			int range = (int)(mobInfo.mobLevel * 0.3);
 			if(range < 1)range = 1;
 			if(range > 8)range = 8;
@@ -68,7 +63,9 @@ public abstract class EntityHandler {
 			
 			living.setCustomNameTag("Lv. " + useLevel);
 			try {
-				living.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(enInfo.getHealthBonus() * 1.5f);
+				float mult = 3;
+				if(useLevel <= 5)mult = 1F;
+				living.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(enInfo.getHealthBonus() * mult);
 				living.setHealth((float)living.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue());
 				
 				living.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(enInfo.getPhysicalDamageMultiplier() * living.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getBaseValue());
@@ -115,6 +112,12 @@ public abstract class EntityHandler {
 		}catch(Exception e) {
 			/* Cannot process, ignore */
 		}
+	}
+	
+	public static void onHeal(LivingHealEvent event)
+	{
+		/* HEAL 3x the ammount(to scale with HP) */
+		event.setAmount(event.getAmount() * 3);
 	}
 
 	public static void onDeath(Entity ent){
@@ -197,7 +200,8 @@ public abstract class EntityHandler {
 	private static int getAttributeGain(int level)
 	{
 		int base = 10;
-		int bonus = (int)(Math.pow(level, 0.5714d) * 7);
+		int bonus = (int)(level * 1.5f);
+		if(level <= 5)bonus = level;
 		return base + bonus;
 	}
 	
