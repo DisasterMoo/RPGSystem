@@ -6,14 +6,14 @@ import net.minecraft.item.ItemStack;
 public class EntityInfo {
 	private ItemStack[] materiaSlot;
 	private Attribute attributes;
-	private Class.Type classType;
+	private Profession.Type profession;
 	private boolean isMateriaSlotEnabled[] = {false, false, false, false, false, false, false};
 	
 	public EntityInfo()
 	{
 		materiaSlot = new ItemStack[7];
 		attributes = new Attribute();
-		classType = null;
+		profession = null;
 	}
 	
 	public ItemStack getMateriaInSlot(int i)
@@ -26,14 +26,14 @@ public class EntityInfo {
 		return attributes;
 	}
 	
-	public Class.Type getClassType()
+	public Profession.Type getProfession()
 	{
-		return classType;
+		return profession;
 	}
 	
-	public void setClassType(Class.Type classType)
+	public void setClassType(Profession.Type profession)
 	{
-		this.classType = classType;
+		this.profession = profession;
 	}
 	
 	public boolean isMateriaSlotEnabled(int i)
@@ -55,11 +55,11 @@ public class EntityInfo {
 	{
 		float finalSTR = this.getAttributes().getSTR();
 		float bonusMult = 1.0f;
-		if(this.getClassType().getPrimaryAttribute() == Attribute.Type.STR) {
-			bonusMult += (this.getClassType().getPrimaryBonus() / 100.0f);
+		if(this.getProfession().getPrimaryAttribute() == Attribute.Type.STR) {
+			bonusMult += (this.getProfession().getPrimaryBonus() / 100.0f);
 		}
-		if(this.getClassType().getSecondaryAttribute() == Attribute.Type.STR) {
-			bonusMult += (this.getClassType().getSecondaryBonus() / 100.0f);
+		if(this.getProfession().getSecondaryAttribute() == Attribute.Type.STR) {
+			bonusMult += (this.getProfession().getSecondaryBonus() / 100.0f);
 		}
 		return finalSTR * bonusMult;
 	}
@@ -68,11 +68,11 @@ public class EntityInfo {
 	{
 		float finalAGI = this.getAttributes().getAGI();
 		float bonusMult = 1.0f;
-		if(this.getClassType().getPrimaryAttribute() == Attribute.Type.AGI) {
-			bonusMult += (this.getClassType().getPrimaryBonus() / 100.0f);
+		if(this.getProfession().getPrimaryAttribute() == Attribute.Type.AGI) {
+			bonusMult += (this.getProfession().getPrimaryBonus() / 100.0f);
 		}
-		if(this.getClassType().getSecondaryAttribute() == Attribute.Type.AGI) {
-			bonusMult += (this.getClassType().getSecondaryBonus() / 100.0f);
+		if(this.getProfession().getSecondaryAttribute() == Attribute.Type.AGI) {
+			bonusMult += (this.getProfession().getSecondaryBonus() / 100.0f);
 		}
 		return finalAGI * bonusMult;
 	}
@@ -81,11 +81,11 @@ public class EntityInfo {
 	{
 		float finalCON = this.getAttributes().getCON();
 		float bonusMult = 1.0f;
-		if(this.getClassType().getPrimaryAttribute() == Attribute.Type.CON) {
-			bonusMult += (this.getClassType().getPrimaryBonus() / 100.0f);
+		if(this.getProfession().getPrimaryAttribute() == Attribute.Type.CON) {
+			bonusMult += (this.getProfession().getPrimaryBonus() / 100.0f);
 		}
-		if(this.getClassType().getSecondaryAttribute() == Attribute.Type.CON) {
-			bonusMult += (this.getClassType().getSecondaryBonus() / 100.0f);
+		if(this.getProfession().getSecondaryAttribute() == Attribute.Type.CON) {
+			bonusMult += (this.getProfession().getSecondaryBonus() / 100.0f);
 		}
 		return finalCON * bonusMult;
 	}
@@ -94,11 +94,11 @@ public class EntityInfo {
 	{
 		float finalINT = this.getAttributes().getINT();
 		float bonusMult = 1.0f;
-		if(this.getClassType().getPrimaryAttribute() == Attribute.Type.INT) {
-			bonusMult += (this.getClassType().getPrimaryBonus() / 100.0f);
+		if(this.getProfession().getPrimaryAttribute() == Attribute.Type.INT) {
+			bonusMult += (this.getProfession().getPrimaryBonus() / 100.0f);
 		}
-		if(this.getClassType().getSecondaryAttribute() == Attribute.Type.INT) {
-			bonusMult += (this.getClassType().getSecondaryBonus() / 100.0f);
+		if(this.getProfession().getSecondaryAttribute() == Attribute.Type.INT) {
+			bonusMult += (this.getProfession().getSecondaryBonus() / 100.0f);
 		}
 		return finalINT * bonusMult;
 	}
@@ -107,11 +107,11 @@ public class EntityInfo {
 	{
 		float finalWIS = this.getAttributes().getWIS();
 		float bonusMult = 1.0f;
-		if(this.getClassType().getPrimaryAttribute() == Attribute.Type.WIS) {
-			bonusMult += (this.getClassType().getPrimaryBonus() / 100.0f);
+		if(this.getProfession().getPrimaryAttribute() == Attribute.Type.WIS) {
+			bonusMult += (this.getProfession().getPrimaryBonus() / 100.0f);
 		}
-		if(this.getClassType().getSecondaryAttribute() == Attribute.Type.WIS) {
-			bonusMult += (this.getClassType().getSecondaryBonus() / 100.0f);
+		if(this.getProfession().getSecondaryAttribute() == Attribute.Type.WIS) {
+			bonusMult += (this.getProfession().getSecondaryBonus() / 100.0f);
 		}
 		return finalWIS * bonusMult;
 	}
@@ -120,11 +120,11 @@ public class EntityInfo {
 	{
 		float finalLCK = this.getAttributes().getLCK();
 		float bonusMult = 1.0f;
-		if(this.getClassType().getPrimaryAttribute() == Attribute.Type.LCK) {
-			bonusMult += (this.getClassType().getPrimaryBonus() / 100.0f);
+		if(this.getProfession().getPrimaryAttribute() == Attribute.Type.LCK) {
+			bonusMult += (this.getProfession().getPrimaryBonus() / 100.0f);
 		}
-		if(this.getClassType().getSecondaryAttribute() == Attribute.Type.LCK) {
-			bonusMult += (this.getClassType().getSecondaryBonus() / 100.0f);
+		if(this.getProfession().getSecondaryAttribute() == Attribute.Type.LCK) {
+			bonusMult += (this.getProfession().getSecondaryBonus() / 100.0f);
 		}
 		return finalLCK * bonusMult;
 	}

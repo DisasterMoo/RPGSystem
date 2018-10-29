@@ -4,7 +4,7 @@ import com.disastermoo.rpgsystem.RPGSystem;
 import com.disastermoo.rpgsystem.core.ProxyClient;
 import com.disastermoo.rpgsystem.core.RegistryHandler;
 import com.disastermoo.rpgsystem.core.system.EntityInfo;
-import com.disastermoo.rpgsystem.core.system.Class;
+import com.disastermoo.rpgsystem.core.system.Profession;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
@@ -48,7 +48,7 @@ public class RPGInfoMessage implements IMessage{
 		send.getAttributes().setINT(buf.readInt());
 		send.getAttributes().setWIS(buf.readInt());
 		send.getAttributes().setLCK(buf.readInt());
-		send.setClassType(Class.Type.getTypeByID(buf.readInt()));
+		send.setClassType(Profession.Type.getTypeByID(buf.readInt()));
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class RPGInfoMessage implements IMessage{
 		buf.writeInt(send.getAttributes().getWIS());
 		buf.writeInt(send.getAttributes().getLCK());
 		int classID = 0;
-		if(send.getClassType() != null)classID = send.getClassType().getID();
+		if(send.getProfession() != null)classID = send.getProfession().getID();
 		buf.writeInt(classID);
 	}
 

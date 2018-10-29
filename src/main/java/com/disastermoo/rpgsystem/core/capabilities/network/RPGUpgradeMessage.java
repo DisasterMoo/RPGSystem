@@ -1,11 +1,9 @@
 package com.disastermoo.rpgsystem.core.capabilities.network;
 
-import com.disastermoo.rpgsystem.core.ProxyCommon;
 import com.disastermoo.rpgsystem.core.capabilities.IRPGInfo;
 import com.disastermoo.rpgsystem.core.capabilities.RPGInfo;
 import com.disastermoo.rpgsystem.core.capabilities.RPGInfoProvider;
 import com.disastermoo.rpgsystem.core.system.EntityHandler;
-import com.disastermoo.rpgsystem.core.system.EntityInfo;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -34,7 +32,7 @@ public class RPGUpgradeMessage implements IMessage{
 		this.upgrade.pointsINT = buf.readInt();
 		this.upgrade.pointsWIS = buf.readInt();
 		this.upgrade.pointsLCK = buf.readInt();
-		this.upgrade.upgradeClass = buf.readBoolean();
+		this.upgrade.upgradeClass = buf.readInt();
 		this.upgrade.buySlot = buf.readInt();
 	}
 
@@ -46,28 +44,28 @@ public class RPGUpgradeMessage implements IMessage{
 		buf.writeInt(this.upgrade.pointsINT);
 		buf.writeInt(this.upgrade.pointsWIS);
 		buf.writeInt(this.upgrade.pointsLCK);
-		buf.writeBoolean(this.upgrade.upgradeClass);
+		buf.writeInt(this.upgrade.upgradeClass);
 		buf.writeInt(this.upgrade.buySlot);
 	}
 	
 	public static final class UpgradeValues{
 		public int pointsSTR, pointsAGI, pointsCON, pointsINT, pointsWIS, pointsLCK;
-		public boolean upgradeClass;
+		public int upgradeClass;
 		public int buySlot;
 	}
 
-	public static final class RPGUpgradeMessageHandler implements IMessageHandler<RPGUpgradeMessage, RPGInfoMessage>{
+	public static final class RPGUpgradeMessageHandler implements IMessageHandler<RPGUpgradeMessage, IMessage>{
 
 		@Override
-		public RPGInfoMessage onMessage(RPGUpgradeMessage message, MessageContext ctx) {
+		public IMessage onMessage(RPGUpgradeMessage message, MessageContext ctx) {
+			
 			if(ctx.side == Side.SERVER) {
 				EntityPlayerMP player = ctx.getServerHandler().player;
 				IRPGInfo info = ((IRPGInfo)player.getCapability(RPGInfoProvider.RPGINFO_CAP, null));
-				if(((RPGInfo)info).Upgrade(message.upgrade, ctx.getServerHandler().player)) {
-					EntityHandler.playerUpdateStats(player);
-					return null;
-					
+				if(!((RPGInfo)info).Upgrade(message.upgrade, ctx.getServerHandler().player)) {
+					/* ERROR TRYING TO UPGRADE, DO SOMETHING? */
 				}
+				EntityHandler.playerUpdateStats(player);
 			}
 			return null;
 		}

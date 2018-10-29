@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import java.io.IOException;
 
 import com.disastermoo.rpgsystem.RPGSystem;
+import com.disastermoo.rpgsystem.core.GuiHandler;
 import com.disastermoo.rpgsystem.core.ProxyClient;
 import com.disastermoo.rpgsystem.core.ProxyCommon;
 import com.disastermoo.rpgsystem.core.capabilities.network.RPGInfoMessage;
@@ -29,8 +30,8 @@ public class GuiStatus extends GuiBase {
 	
 	public EntityInfo player;
 	private UpgradeValues value;
-	private int auxlvl;
-	private GuiButton btnSave, btnCancel;
+	private int auxlvl, auxminlvl;
+	private GuiButton btnSave, btnCancel, btnChangeProfession;
 	private boolean markDirty;
 	
 	public GuiStatus()
@@ -38,23 +39,33 @@ public class GuiStatus extends GuiBase {
 		player = ((ProxyClient)RPGSystem.proxy).getClientInfo();
 		value = new UpgradeValues();
 		auxlvl = 0;
-		markDirty = false;
+		auxminlvl = 0;
+		markDirty = true;
 	}
 	
 	@Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) 
 	{
+		left = (width - Constants.SIZE_X_GUI_STATUS_BACKGROUND * 2) / 2;
+        top = (height - Constants.SIZE_Y_GUI_STATUS_BACKGROUND) / 2;
 		drawMainBackground();
-		drawAttribute();
-		drawStatus(); 
 		drawCharacter(mouseX, mouseY);
+		if(!((ProxyClient)RPGSystem.proxy).isMarkedForUpdate()) {
+			drawAttribute();
+			drawStatus();
+			drawProfession();
 		if(this.buttonList.get(0).visible)drawUpgradeValues();
+		}else {
+			/* LOADING */
+		}
         super.drawScreen(mouseX, mouseY, partialTicks);
 	}
 	
 	@Override
 	public void initGui()
 	{
+		left = (width - Constants.SIZE_X_GUI_STATUS_BACKGROUND * 2) / 2;
+        top = (height - Constants.SIZE_Y_GUI_STATUS_BACKGROUND) / 2;
 		int x, y, space;
 		x = 15;
 		y = 165;
@@ -62,10 +73,12 @@ public class GuiStatus extends GuiBase {
 		for(int i = 1; i <= 6; i++) {
 			addButton(i, x + (i-1) * space, y, 20, 20, "+");
 		}
-		btnSave = new GuiButton(7, x + 6 * space + left, 200 + top, 20, 20, "O");
-		btnCancel = new GuiButton(8, x + 7 * space + left, 200 + top, 20, 20, "X");
+		btnSave = new GuiButton(7, x + 4 * space + left, 200 + top, 20, 20, "O");
+		btnCancel = new GuiButton(8, x + 5 * space + left, 200 + top, 20, 20, "X");
+		btnChangeProfession = new GuiButton(9, 185 + Constants.SIZE_X_PROFESSION + left, 40 + top, 70, 20, "Change");
 		this.buttonList.add(btnSave);
 		this.buttonList.add(btnCancel);
+		this.buttonList.add(btnChangeProfession);
 		checkVisibility();
 		checkEnabled();
 	}
@@ -75,43 +88,55 @@ public class GuiStatus extends GuiBase {
         this.buttonList.add(btn);
     }
 	
-	 @Override
+	@Override
 	public void updateScreen()
 	{
-		 if(this.markDirty) {
-			 if(!((ProxyClient)RPGSystem.proxy).isMarkedForUpdate()) {
-				 player = ((ProxyClient)RPGSystem.proxy).getClientInfo();
+		left = (width - Constants.SIZE_X_GUI_STATUS_BACKGROUND * 2) / 2;
+        top = (height - Constants.SIZE_Y_GUI_STATUS_BACKGROUND) / 2;
+        if(!((ProxyClient)RPGSystem.proxy).isMarkedForUpdate()) {
+			 if(this.markDirty) {
+				 if(!((ProxyClient)RPGSystem.proxy).isMarkedForUpdate()) {
+					player = ((ProxyClient)RPGSystem.proxy).getClientInfo();
 					value = new UpgradeValues();
 					auxlvl = 0;
+					auxminlvl = 0;
 					markDirty = false;
-					checkVisibility();
 					checkEnabled();
+				 }
+			 }else {
+				 /* Update button location */
+				int x, y, space;
+				x = 15;
+				y = 165;
+				space = 25;
+				for(int i = 0; i < 6; i++) {
+					GuiButton btn = this.buttonList.get(i);
+					btn.x = x + i * space + left;
+					btn.y = y + top;
+				}
+				btnSave.x = x + 4 * space + left;
+				btnSave.y = 200 + top;
+				btnCancel.x = x + 5 * space + left;
+				btnCancel.y = 200 + top;
+				btnChangeProfession.x = 185 + Constants.SIZE_X_PROFESSION + left;
+				btnChangeProfession.y = 40 + top;
 			 }
-		 }else {
-			 /* Update button location */
-			int x, y, space;
-			x = 15;
-			y = 165;
-			space = 25;
-			for(int i = 0; i < 6; i++) {
-				GuiButton btn = this.buttonList.get(i);
-				btn.x = x + i * space + left;
-				btn.y = y + top;
-			}
-			btnSave.x = x + 4 * space + left;
-			btnSave.y = 200 + top;
-			btnCancel.x = x + 5 * space + left;
-			btnCancel.y = 200 + top;
-		 }
+			 checkVisibility();
+        }else {
+        	/* LOADING */
+        	for(int i = 0; i < 9; i++)this.buttonList.get(i).visible = false;
+        }
 	}
 	 
 	 public void checkVisibility()
 	 {
-		 if(Minecraft.getMinecraft().player.experienceLevel < RPGUtils.minLevel(player)) {
+		 if(auxminlvl < 1)auxminlvl = RPGUtils.minLevel(player);
+		 if(Minecraft.getMinecraft().player.experienceLevel < auxminlvl) {
 			 for(int i = 0; i < 8; i++)this.buttonList.get(i).visible = false;
 		 }else {
 			 for(int i = 0; i < 8; i++)this.buttonList.get(i).visible = true;
 		 }
+		 btnChangeProfession.visible = true;
 	 }
 	 
 	 public void checkEnabled()
@@ -130,6 +155,13 @@ public class GuiStatus extends GuiBase {
 		 }else {
 			 btnSave.enabled = false;
 			 btnCancel.enabled = false;
+		 }
+		 if(player.getProfession().getUpgrades().size() > 0) {
+			 btnChangeProfession.enabled = true;
+			 btnChangeProfession.displayString = "Change";
+		 }else {
+			 btnChangeProfession.enabled = false;
+			 btnChangeProfession.displayString = "MAX";
 		 }
 	 }
 	
@@ -157,9 +189,14 @@ public class GuiStatus extends GuiBase {
 		 		value.pointsLCK++;
 		 		break;
 		 	case 7:
-		 		ProxyCommon.NETWORK_INSTANCE.sendToServer(new RPGUpgradeMessage(value));
-		 		this.markDirty = true;
-		 		((ProxyClient)RPGSystem.proxy).markUpdate(true);
+		 		/* LAST CHECK TO ENSURE UPGRADE */
+		 		if(Minecraft.getMinecraft().player.experienceLevel >= RPGUtils.upgradeLevelsNeeded(value, player)) {
+			 		ProxyCommon.NETWORK_INSTANCE.sendToServer(new RPGUpgradeMessage(value));
+			 		this.markDirty = true;
+			 		((ProxyClient)RPGSystem.proxy).markUpdate(true);
+		 		}else {
+		 			/* CHECK FAILED */
+		 		}
 		 		break;
 		 	case 8:
 		 		value.pointsSTR = 0;
@@ -168,6 +205,10 @@ public class GuiStatus extends GuiBase {
 		 		value.pointsINT = 0;
 		 		value.pointsWIS = 0;
 		 		value.pointsLCK = 0;
+		 		break;
+		 	case 9:
+		 		Minecraft.getMinecraft().player.openGui(RPGSystem.INSTANCE, GuiHandler.GUI_PROFESSION, 
+		    			Minecraft.getMinecraft().player.world, (int)Minecraft.getMinecraft().player.posX, (int)Minecraft.getMinecraft().player.posY, (int)Minecraft.getMinecraft().player.posZ);
 		 		break;
 			 default:
 				 break;
@@ -184,12 +225,19 @@ public class GuiStatus extends GuiBase {
     
     protected void drawMainBackground()
     {
-    	left = (width - Constants.SIZE_X_GUI_STATUS_BACKGROUND * 2) / 2;
-        top = (height - Constants.SIZE_Y_GUI_STATUS_BACKGROUND) / 2;
     	bindTexture(new ModResource(Constants.ASSET_GUI_STATUS_LEFT_BACKGROUND));
     	drawRect(0, 0, 0, 0, Constants.SIZE_X_GUI_STATUS_BACKGROUND, Constants.SIZE_Y_GUI_STATUS_BACKGROUND);
     	bindTexture(new ModResource(Constants.ASSET_GUI_STATUS_RIGHT_BACKGROUND));
     	drawRect(Constants.SIZE_X_GUI_STATUS_BACKGROUND, 0, 0, 0, Constants.SIZE_X_GUI_STATUS_BACKGROUND, Constants.SIZE_Y_GUI_STATUS_BACKGROUND);
+    }
+    
+    protected void drawProfession()
+    {   	
+    	bindTexture(new ModResource(player.getProfession().getProfessionAsset()));
+    	drawRect(182, 21, Constants.SIZE_X_PROFESSION, Constants.SIZE_Y_PROFESSION);
+    	this.drawString("Prof: " + player.getProfession().name(), 185 + Constants.SIZE_X_PROFESSION, 21, 0.8f, 0);
+    	if(player.getProfession().getPrimaryBonus() > 0)this.drawString(player.getProfession().getPrimaryAttribute().name() + ": +" + player.getProfession().getPrimaryBonus() + "%", 185 + Constants.SIZE_X_PROFESSION, 65, 0.8f, 0);
+    	if(player.getProfession().getSecondaryBonus() > 0)this.drawString(player.getProfession().getSecondaryAttribute().name() + ": +" + player.getProfession().getSecondaryBonus() + "%", 185 + Constants.SIZE_X_PROFESSION, 80, 0.8f, 0);
     }
 
     @Override

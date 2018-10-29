@@ -7,6 +7,7 @@ import com.disastermoo.rpgsystem.core.config.RPGData;
 import com.disastermoo.rpgsystem.core.capabilities.IRPGInfo;
 import com.disastermoo.rpgsystem.core.capabilities.RPGInfoProvider;
 import com.disastermoo.rpgsystem.core.capabilities.RPGInfoStorage;
+import com.disastermoo.rpgsystem.core.capabilities.network.RPGInfoMessage;
 import com.disastermoo.rpgsystem.core.capabilities.network.RPGUpgradeMessage;
 import com.disastermoo.rpgsystem.core.config.RPGConfig.Constants;
 import com.disastermoo.rpgsystem.core.util.RPGUtils;
@@ -42,6 +43,7 @@ public class ProxyCommon {
     	ConfigManager.sync(Constants.MODID, Type.INSTANCE);
     	CapabilityManager.INSTANCE.register(IRPGInfo.class, new RPGInfoStorage(), new RPGInfoProvider.Factory());
     	NETWORK_INSTANCE.registerMessage(RPGUpgradeMessage.RPGUpgradeMessageHandler.class, RPGUpgradeMessage.class, 1, Side.SERVER);
+    	NETWORK_INSTANCE.registerMessage(RPGInfoMessage.RPGInfoMessageHandler.class, RPGInfoMessage.class, 0, Side.CLIENT);
     }
     
     public void postInit(FMLPostInitializationEvent event) {

@@ -108,6 +108,7 @@ public class EventHandler {
 		KeyBinding[] keys = ((ProxyClient)RPGSystem.proxy).getKeyBiding();
 	    if (keys[0].isPressed()) 
 	    {
+	    	if(!((ProxyClient)RPGSystem.proxy).isMarkedForUpdate())
 	    	Minecraft.getMinecraft().player.openGui(RPGSystem.INSTANCE, GuiHandler.GUI_STATUS, 
 	    			Minecraft.getMinecraft().player.world, (int)Minecraft.getMinecraft().player.posX, (int)Minecraft.getMinecraft().player.posY, (int)Minecraft.getMinecraft().player.posZ);
 	    }	

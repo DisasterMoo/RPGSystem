@@ -46,8 +46,8 @@ public abstract class EntityHandler {
 			RPGData.INSTANCE.save();
 		}
 		EntityInfo enInfo = RPGUtils.getRPGInfo(living).getInfo();
-		if(enInfo.getClassType() == null) {
-			enInfo.setClassType(Class.Type.NONE);
+		if(enInfo.getProfession() == null) {
+			enInfo.setClassType(Profession.Type.NONE);
 			int range = (int)(mobInfo.mobLevel * 0.3);
 			if(range < 1)range = 1;
 			if(range > 8)range = 8;
@@ -80,8 +80,8 @@ public abstract class EntityHandler {
 	public static void playerUpdateStats(EntityPlayer player)
 	{
 		EntityInfo enInfo = RPGUtils.getRPGInfo(player).getInfo();
-		if(enInfo.getClassType() == null) {
-			enInfo.setClassType(Class.Type.NONE);
+		if(enInfo.getProfession() == null) {
+			enInfo.setClassType(Profession.Type.NONE);
 		}
 		player.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(enInfo.getHealthBonus());
 		player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).setBaseValue(4 * enInfo.getAttackSpeedMultiplier());
@@ -89,7 +89,6 @@ public abstract class EntityHandler {
 		if(luck > 1024)luck = 1024;
 		player.getEntityAttribute(SharedMonsterAttributes.LUCK).setBaseValue(luck);
 		player.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(enInfo.getKnockbackResistance());
-		player.capabilities.setPlayerWalkSpeed(enInfo.getMovSpeed());
 		ProxyCommon.NETWORK_INSTANCE.sendTo(new RPGInfoMessage(enInfo), (EntityPlayerMP)player);
 	}
 	

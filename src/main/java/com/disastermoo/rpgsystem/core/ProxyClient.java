@@ -36,7 +36,6 @@ public class ProxyClient extends ProxyCommon {
     	{
     	    ClientRegistry.registerKeyBinding(keys[i]);
     	}
-    	NETWORK_INSTANCE.registerMessage(RPGInfoMessage.RPGInfoMessageHandler.class, RPGInfoMessage.class, 0, Side.CLIENT);
     }
     
 	@Override

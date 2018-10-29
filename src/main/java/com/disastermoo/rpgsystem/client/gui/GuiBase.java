@@ -33,6 +33,20 @@ public class GuiBase extends GuiScreen {
     public void drawRect(int x, int y, int u, int v, int w, int h) {
         drawRect(x, y, u, v, w, h, RenderRotation.NORMAL);
     }
+    
+    public void drawRect(int startX, int startY, int sizeX, int sizeY)
+    {	
+    	startX += left;
+    	startY += top;
+    	Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder worldRenderer = tessellator.getBuffer();
+        worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        worldRenderer.pos((double) (startX), (double) (startY + sizeY), (double) this.zLevel).tex(0, 1).endVertex();
+        worldRenderer.pos((double) (startX + sizeX), (double) (startY + sizeY), (double) this.zLevel).tex(1, 1).endVertex();
+        worldRenderer.pos((double) (startX + sizeX), (double) (startY), (double) this.zLevel).tex(1, 0).endVertex();
+        worldRenderer.pos((double) (startX), (double) (startY), (double) this.zLevel).tex(0, 0).endVertex();
+        tessellator.draw();
+    }
 
     public void drawRect(int x, int y, int u, int v, int w, int h, RenderRotation rotation) {
         boolean rotate = rotation == RenderRotation.ROTATE_90 || rotation == RenderRotation.ROTATE_270 || rotation == RenderRotation.ROTATE_90_FLIP || rotation == RenderRotation.ROTATE_270_FLIP;

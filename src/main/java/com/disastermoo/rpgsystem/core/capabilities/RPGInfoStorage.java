@@ -1,16 +1,13 @@
 package com.disastermoo.rpgsystem.core.capabilities;
 
 import com.disastermoo.rpgsystem.core.RegistryHandler;
-import com.disastermoo.rpgsystem.core.system.Class;
+import com.disastermoo.rpgsystem.core.system.Profession;
 import com.disastermoo.rpgsystem.core.system.EntityInfo;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 
@@ -38,7 +35,7 @@ public class RPGInfoStorage implements IStorage<IRPGInfo>{
 		rpgData.setInteger("WIS", instance.getInfo().getAttributes().getWIS());
 		rpgData.setInteger("LCK", instance.getInfo().getAttributes().getLCK());
 		int classID = 0;
-		if(instance.getInfo().getClassType() != null)classID = instance.getInfo().getClassType().getID();
+		if(instance.getInfo().getProfession() != null)classID = instance.getInfo().getProfession().getID();
 		rpgData.setInteger("Class", classID);
 		return rpgData;
 	}
@@ -70,7 +67,7 @@ public class RPGInfoStorage implements IStorage<IRPGInfo>{
 		instance.getInfo().getAttributes().setINT(rpgData.getInteger("INT"));
 		instance.getInfo().getAttributes().setWIS(rpgData.getInteger("WIS"));
 		instance.getInfo().getAttributes().setLCK(rpgData.getInteger("LCK"));
-		instance.getInfo().setClassType(Class.Type.getTypeByID(rpgData.getInteger("Class")));
+		instance.getInfo().setClassType(Profession.Type.getTypeByID(rpgData.getInteger("Class")));
 	}
 
 }

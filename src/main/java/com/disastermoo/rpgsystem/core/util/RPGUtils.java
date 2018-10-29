@@ -6,6 +6,7 @@ import com.disastermoo.rpgsystem.core.capabilities.network.RPGUpgradeMessage.Upg
 import com.disastermoo.rpgsystem.core.config.RPGData;
 import com.disastermoo.rpgsystem.core.config.RPGData.MobInfo;
 import com.disastermoo.rpgsystem.core.system.EntityInfo;
+import com.disastermoo.rpgsystem.core.system.Profession;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -65,7 +66,7 @@ public abstract class RPGUtils {
 			level += attStart / 10;
 			attStart += 1;
 		}
-		if(values.upgradeClass)level += 100;
+		if(values.upgradeClass > 0)level += Profession.Type.getTypeByID(values.upgradeClass).getLevelsNeeded();
 		if(values.buySlot > 0) {
 			if(values.buySlot % 2 == 0)level += 50;
 			else level += 100;
